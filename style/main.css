@@ -1,0 +1,261 @@
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	background: #156E7E; /* #FFB230 */
+}
+
+h1 {
+	font-size: 23px;
+}
+h2 {a
+	font-size: 18px;
+}
+
+#header {
+	padding: 20px;
+	background: #3D3737;
+}
+
+#masthead {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#logo {
+	float: left;
+	color: #FFF;
+	font-style: italic;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75);
+}
+
+#logo h1 {
+	font-size: 25px;
+	font-weight: normal;
+	margin: 0;
+}
+#options {
+	float: right;
+}
+
+#mainContainer {
+	background: #FFF;
+	height: 430px;
+	padding: 20px 0;
+}
+
+.page {
+	width: 806px;
+	margin: 0 auto;	
+	text-align: left;
+}
+.column {
+	float: left;
+	margin: 0 50px;
+	width: 300px;
+}
+#testScreen {
+	text-align: center;
+}
+/*
+#keyboard {
+	width: 806px;
+	margin: 0 auto;	
+}
+*/
+#testStatus {
+	color: #FFF;
+	/* font-weight: bold; */
+	margin: 15px auto;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+li {
+	list-style-type: none;
+	background: -moz-linear-gradient(90deg, #4C4C54, #333333);
+	background: -webkit-gradient(linear, center top, center bottom, from(#4C4C54), to(#333333));
+	background-color: #3A3A3E;
+	float: left;
+	height: 60px;
+	width: 60px;
+	margin: 1px;
+	color: #FFF;
+	font-weight: bold;
+	border: 1px solclass #000;
+	line-height: 60px;
+	-moz-border-radius: 5px;		
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.75);
+	/* -moz-box-shadow: 1px 1px 1px #CCC; */
+	/* border: 1px solid #000000;	*/	
+}
+li.anchorKey {
+	background: #222;
+}
+li.spacebar {
+	width: 422px;
+	height: 50px;
+	margin-top: 5px;
+}
+#wrongCursor{
+	 font-weight: bold;
+	 color: red;
+	 display: none;
+}
+li.spacer{
+	background: transparent;
+	width: 30px;
+	padding: 0px;	
+}
+span.secondary{
+	color: #BADEE4;	
+}
+span.main{
+}
+#testString, #resultString {
+	font-weight: bold;
+}
+#testString span.charRemainder {
+	color: #495C59;
+}
+#testString span.cursorBlink {
+	background: #A7F1F2;
+}
+#resultString{
+	color: #000;
+}
+#resultString span.curChar,
+#resultString span.charRemainder {
+	color: #FFF;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+#resultString span.cursorBlink {
+	border-bottom: 1px solid #000;
+}
+li.rightKey {
+	background: #017600;
+}
+li.wrongKey, #resultString span.wrongKey {
+	background: #C40303;
+}
+#testString span.wrongKey,
+#resultString span.wrongKey {
+	color: #C40303;
+}
+#testString span.wrongKey {
+	background: #FFF;
+}
+#testString span.wrongKey {
+	color: #C40303;
+}
+#testStage {
+	color: #9DD5DE;		
+}
+#testStage .curLesson{
+	color: #156E7E;
+}
+
+#testStage a {
+	color: #156E7E;
+	cursor: pointer;
+}
+
+#testStage a:hover {
+	text-decoration: underline;
+}
+#resultContainer {
+	width: 420px;
+	text-align: left;
+	margin: 0 auto;
+	border: 1px #9591F4 solid;
+	background: #FFF;
+	//height: 80px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	-moz-box-shadow: -1px 1px 7px #63673B;
+	-webkit-box-shadow: -1px 1px 7px #63673B;
+}
+#resultContainer p {
+	margin:0;
+}
+#timer, #stats {	
+/*		padding: 10px;*/
+/*		width: 180px;*/
+}
+#timer {
+	float: left;
+	padding: 20px 0;
+	margin: 0;
+	text-align: right;
+	border-right: #CDD8E8 1px solid;
+	width: 210px;
+}
+#timer p {
+	padding-right: 20px;
+}
+#timerUpdater {
+	font-weight: bold;
+}
+#stats {
+	float: right;
+	margin-top: 10px;
+	width: 190px;
+}
+#timerUpdater {
+	font-size: 2em;
+}
+
+#testStringContainer .finished {
+	color: #156E7E;
+}
+#resultContainer span.finished {
+	font-weight: bold;
+}
+#resultContainer .disabled {
+	color: #9295A9;
+}
+#scoreList {
+	float: right;
+}
+.score {
+	margin-bottom: 15px;
+}
+.score td, .score th {
+	border-left: 1px solid #FFFFFF;
+	padding: 5px;
+}
+.score .lesson {
+	width: 130px;
+}
+.lessonDetail {
+	width: 35px;
+}
+.score tr {
+	background: #F8FCFF;	
+}
+.score .even {
+	background: #E7F5FF;	
+}
+.score .emphasis {
+	background: #B9D4ED;			
+}
+.chooseKeyboard{
+	float: left;
+	padding: 0 25px 25px 0;
+}
+a {
+	cursor: pointer;
+}
+.clear { clear: both; }
