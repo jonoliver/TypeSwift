@@ -9,7 +9,7 @@ body {
 h1 {
 	font-size: 23px;
 }
-h2 {a
+h2 {
 	font-size: 18px;
 }
 
@@ -55,6 +55,7 @@ h2 {a
 	margin: 0 50px;
 	width: 300px;
 }
+
 #testScreen {
 	text-align: center;
 }
@@ -253,7 +254,20 @@ li.wrongKey, #resultString span.wrongKey {
 }
 .chooseKeyboard{
 	float: left;
-	padding: 0 25px 25px 0;
+	width: 80px;
+	padding: 85px 25px 0 0;
+}
+
+.chooseKeyboard:hover {
+	color: #156E7E;
+}
+
+#chooseQwerty {
+	background: transparent url("img/buttonQwerty.png") 0 0 no-repeat;
+}
+
+#chooseDvorak {
+	background: transparent url("img/buttonDvorak.png") 0 0 no-repeat;	
 }
 a {
 	cursor: pointer;
