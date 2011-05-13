@@ -1,10 +1,3 @@
-/*todo list
--Add accuracy to score display
--reset test (esp if navigate to dift "page", switching keyboard?)
--remember saved keyboard type
--delete redundant function calls in "class" objects (call "this" for internal functs)
-*/
-
 (function(){
 
 var debug = false;
