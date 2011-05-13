@@ -1,6 +1,4 @@
 /*todo list
-
--fix "back" button
 -Add accuracy to score display
 -reset test (esp if navigate to dift "page", switching keyboard?)
 -remember saved keyboard type
@@ -770,10 +768,12 @@ var PageHandler = function(){
 			$("#testStatusContainer").hide();
 		}
 		if ($("#scoreScreen").is(":visible")){
-			$("input.viewScores").attr("value", "Back");
+			$(".viewScores").hide();
+			$("#header .backToTest").show();			
 		}
 		else {
-			$("input.viewScores").attr("value", "Scores");			
+			$(".viewScores").show();
+			$("#header .backToTest").hide();			
 		}
 		
 	}

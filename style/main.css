@@ -71,6 +71,13 @@ h2 {
 	margin: 15px auto;
 }
 
+/*
+#testStatus span{
+	background: transparent url("img/startArrow.png") no-repeat;
+	overflow: visible;
+}
+*/
+
 ul {
 	margin: 0;
 	padding: 0;
