@@ -186,8 +186,9 @@ li.wrongKey, #resultString span.wrongKey {
 	text-align: left;
 	margin: 0 auto;
 	border: 1px #9591F4 solid;
-	background: #FFF;
-	//height: 80px;
+	background: #FFFFFF;
+	background: -moz-linear-gradient(90deg, #FFFFFF 86%, #C0C4C8) #FFFFFF;
+	/* height: 80px; */
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	-khtml-border-radius: 8px;
