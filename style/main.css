@@ -30,6 +30,8 @@ li {
 	color: #FFF;
 	font-style: italic;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75);
+	height: 80px;
+	line-height: 80px;
 }
 
 #logo h1 {
@@ -42,7 +44,11 @@ li {
 }
 
 #headerControls li {
+	display: -moz-inline-stack;
 	display: inline-block;
+	margin: 0 -2px;
+	zoom: 1;
+	*display: inline;
 }
 
 #headerControls a {
