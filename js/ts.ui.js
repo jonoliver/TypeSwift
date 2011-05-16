@@ -945,6 +945,25 @@ $(document).ready(function() {
 	
 	$(document).keyup();
 		
+		
+	$("#settingsLink").hover(
+		function(){
+			var $menu = $("#settingsMenu");
+			var pos = $(this).offset();
+			var linkWidth = $(this).width();
+			var linkHeight = $(this).height();
+			var menuWidth = $menu.width();
+			$menu.show()
+				.css({"top" : pos["top"] + linkHeight, "left": pos["left"] + (linkWidth - menuWidth)});
+		},
+		function(){ 		
+			//$("#settingsMenu").hide();	
+		}
+	);
+	$("#settingsMenu").mouseleave(function(){
+		var hide = function(){$("#settingsMenu").hide()};
+		setTimeout(hide,300);
+	});
 });
 
 })();

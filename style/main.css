@@ -12,10 +12,12 @@ h1 {
 h2 {
 	font-size: 18px;
 }
-
+li {
+	list-style-type: none;	
+}
 #header {
-	padding: 20px;
 	background: #3D3737;
+	height: 80px;
 }
 
 #masthead {
@@ -35,10 +37,41 @@ h2 {
 	font-weight: normal;
 	margin: 0;
 }
-#options {
+#headerControls {
 	float: right;
 }
 
+#headerControls li {
+	display: inline-block;
+}
+
+#headerControls a {
+	display: block;
+	height: 80px;
+	width: 70px;
+	border-right: 1px solid #292929;
+	border-left: 1px solid #555;
+}
+
+#headerControls a span {
+	display: none;
+}
+
+.viewScores {
+	background: url("img/viewScores.png") no-repeat center center;
+	width: 45px;
+	height: 40px;
+}	
+
+#settingsLink {
+	background: url("img/settings.png") no-repeat;
+	width: 62px;
+	height: 62px;
+}
+
+#settingsLink:hover {
+	background: url("img/settingsOver.png") no-repeat;
+}
 #mainContainer {
 	background: #FFF;
 	height: 430px;
@@ -82,8 +115,7 @@ ul {
 	margin: 0;
 	padding: 0;
 }
-li {
-	list-style-type: none;
+#keyboard li {
 	background: -moz-linear-gradient(90deg, #4C4C54, #333333);
 	background: -webkit-gradient(linear, center top, center bottom, from(#4C4C54), to(#333333));
 	background-color: #3A3A3E;
@@ -93,7 +125,7 @@ li {
 	margin: 1px;
 	color: #FFF;
 	font-weight: bold;
-	border: 1px solclass #000;
+	/* border: 1px solid #000; */
 	line-height: 60px;
 	-moz-border-radius: 5px;		
 	-webkit-border-radius: 5px;
@@ -103,10 +135,10 @@ li {
 	/* -moz-box-shadow: 1px 1px 1px #CCC; */
 	/* border: 1px solid #000000;	*/	
 }
-li.anchorKey {
+#keyboard li.anchorKey {
 	background: #222;
 }
-li.spacebar {
+#keyboard li.spacebar {
 	width: 422px;
 	height: 50px;
 	margin-top: 5px;
@@ -116,7 +148,7 @@ li.spacebar {
 	 color: red;
 	 display: none;
 }
-li.spacer{
+#keyboard li.spacer{
 	background: transparent;
 	width: 30px;
 	padding: 0px;	
@@ -277,6 +309,27 @@ li.wrongKey, #resultString span.wrongKey {
 #chooseDvorak {
 	background: transparent url("img/buttonDvorak.png") 0 0 no-repeat;	
 }
+
+#settingsMenu {
+	display: none;
+	position: absolute;
+	color: #FFF;
+	background: #3A3434;
+	text-align: left;
+}
+
+#settingsMenu div {
+	padding: 10px;
+}
+
+/* #optionQwerty {*/
+#settingsMenu a {
+	display: block;
+	background: transparent url("img/keyboard-option-qwerty.png") 0 0 no-repeat;
+	width: 101px;
+	height: 16px;
+}
+
 a {
 	cursor: pointer;
 }

@@ -8,17 +8,58 @@
 <link rel="stylesheet" type="text/css" href="style/main.css" /> 
 </head>
 <body>
+<div id="settingsMenu">
+	<div>
+		<table>
+			<tr>
+				<td>KEYBOARD</td>
+				<td>
+					<a id="optionQwerty" href="#"></a>
+				</td>
+			</tr>
+			<tr>
+				<td>TEST TYPE</td>
+				<td>
+					<a id="" href="#"></a>
+				</td>
+			</tr>
+			<tr>
+				<td>LESSON</td>
+				<td><select id="keyType"></select></td>
+			</tr>
+		</table>
+		<!--
+		<ul>
+			<li>KEYBOARD</li>
+			<li>TEST TYPE</li>
+			<li>LESSON
+				<select id="keyType"></select>
+			</li>
+		</ul>
+		-->
+	</div>
+</div>
 <div id="header">
 	<div id="masthead">
 		<div id="logo">
 			<h1>TYPE<b>SWIFT</b></h1>
 		</div>
-		<div id="options">
+		<div id="headerControls">
+			<!--
 			<input type="button" value="Back" class="backToTest" style="display:none" />
 			<input type="button" value="Scores" class="viewScores" />
 			<input type="button" value="Random!" id="randomTest" />
 			<select id="keyType"></select>
 			<select id="lessonId"></select>
+			-->
+			<ul>
+				<li>
+					<a href="#" class="viewScores"><span>Scores</span></a>					
+				</li>
+				<li>
+					<a href="#" id="settingsLink"><span>Settings</span></a>
+				</li>
+			</ul>
 		</div>
 		<div class="clear"></div>
 	</div>
