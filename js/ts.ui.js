@@ -16,7 +16,7 @@ if (window.console) {
 
 // string resources
 var resources = {
-	select: "Please select a test",
+	select: "Select a lesson!",
 	start : "Start typing to begin!",
 	inProgress : "Test in progress...",	
 	paused : "Test paused (begin typing to resume).",
@@ -945,25 +945,54 @@ $(document).ready(function() {
 	
 	$(document).keyup();
 		
+	var DropDown = function(){
+		var isHovering = false;
 		
-	$("#settingsLink").hover(
-		function(){
-			var $menu = $("#settingsMenu");
-			var pos = $(this).offset();
-			var linkWidth = $(this).width();
-			var linkHeight = $(this).height();
-			var menuWidth = $menu.width();
-			$menu.show()
-				.css({"top" : pos["top"] + linkHeight, "left": pos["left"] + (linkWidth - menuWidth)});
-		},
-		function(){ 		
-			//$("#settingsMenu").hide();	
-		}
-	);
-	$("#settingsMenu").mouseleave(function(){
-		var hide = function(){$("#settingsMenu").hide()};
-		setTimeout(hide,300);
-	});
+		$("#settingsLink").hover(
+			
+			function(){
+				isHovering =  true;
+				var $menu = $("#settingsMenu");
+				var pos = $(this).offset();
+				var linkWidth = $(this).width();
+				var linkHeight = $(this).height();
+				var menuWidth = $menu.width();
+				$menu.show()
+					.css({"top" : pos["top"] + linkHeight, "left": pos["left"] + (linkWidth - menuWidth)});
+			},
+			function(){ 		
+				isHovering = false;
+				hideWindow();				
+			}
+		);
+		$("#settingsMenu").hover(
+			function(){
+				isHovering = true;
+			},
+			function(){
+				isHovering = false;
+				hideWindow();
+			}
+		);
+		
+		$("#keyType").hover(
+			function(){
+				isHovering = true;
+			},
+			function(){
+				isHovering = false;
+				hideWindow();
+			}
+		);
+		
+		var hideIf = function(){
+			if (!isHovering)
+				$("#settingsMenu").hide()
+		};
+		
+		function hideWindow(){setTimeout(hideIf,350)};
+	};
+	tip = new DropDown();
 });
 
 })();

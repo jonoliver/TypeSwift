@@ -16,7 +16,7 @@ li {
 	list-style-type: none;	
 }
 #header {
-	background: #3D3737;
+	background: url("img/header-bg.jpg") #3D3737;
 	height: 80px;
 }
 
@@ -64,19 +64,19 @@ li {
 }
 
 .viewScores {
-	background: url("img/viewScores.png") no-repeat center center;
+	background: url("img/viewScores.jpg") no-repeat top center;
 	width: 45px;
 	height: 40px;
 }	
 
 #settingsLink {
-	background: url("img/settings.png") no-repeat;
+	background: url("img/settings.jpg") no-repeat top center;
 	width: 62px;
 	height: 62px;
 }
 
-#settingsLink:hover {
-	background: url("img/settingsOver.png") no-repeat;
+#settingsLink:hover, .viewScores:hover {
+	background-position: top right;
 }
 #mainContainer {
 	background: #FFF;
@@ -336,6 +336,15 @@ li.wrongKey, #resultString span.wrongKey {
 	height: 16px;
 }
 
+
+.checkmark {
+	color: #156E7E;
+	font-size: 30px;
+	line-height: 1;
+	padding-left: 15px;
+    padding-right: 2px;
+	vertical-align: middle;
+}
 a {
 	cursor: pointer;
 }
