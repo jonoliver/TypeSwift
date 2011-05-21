@@ -75,7 +75,7 @@ li {
 	height: 62px;
 }
 
-#settingsLink:hover, .viewScores:hover {
+#settingsLink.hover, .viewScores.hover {
 	background-position: top right;
 }
 #mainContainer {
@@ -316,12 +316,22 @@ li.wrongKey, #resultString span.wrongKey {
 	background: transparent url("img/buttonDvorak.png") 0 0 no-repeat;	
 }
 
-#settingsMenu {
+
+#settingsMenu, #scoresOver {
 	display: none;
 	position: absolute;
 	color: #FFF;
-	background: #3A3434;
+	font-size: 12px;
+	background: #3B3B3D;
 	text-align: left;
+	border-right: 1px solid #292929;
+	-moz-border-radius: 0 0 5px 5px;
+}
+
+#scoresOver {
+	width: 70px;
+	text-align: center;
+	padding-bottom: 10px;
 }
 
 #settingsMenu div {

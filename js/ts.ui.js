@@ -761,11 +761,11 @@ var PageHandler = function(){
 			$("#testStatusContainer").hide();
 		}
 		if ($("#scoreScreen").is(":visible")){
-			$(".viewScores").hide();
+			$(".viewScores").parent().hide();
 			$("#header .backToTest").show();			
 		}
 		else {
-			$(".viewScores").show();
+			$(".viewScores").parent().show();
 			$("#header .backToTest").hide();			
 		}
 		
@@ -945,27 +945,30 @@ $(document).ready(function() {
 	
 	$(document).keyup();
 		
-	var DropDown = function(){
+	var HoverBoard = function(target, board){
 		var isHovering = false;
+		var $link = $(target);
+		var $menu = $(board);
 		
-		$("#settingsLink").hover(
+		$link.hover(
 			
 			function(){
 				isHovering =  true;
-				var $menu = $("#settingsMenu");
-				var pos = $(this).offset();
-				var linkWidth = $(this).width();
-				var linkHeight = $(this).height();
+				var $this = $(this);
+				var pos = $this.offset();
+				var linkWidth = $this.width();
+				var linkHeight = $this.height();
 				var menuWidth = $menu.width();
+				$this.addClass("hover");
 				$menu.show()
-					.css({"top" : pos["top"] + linkHeight, "left": pos["left"] + (linkWidth - menuWidth)});
+					.css({"top" : pos["top"] + linkHeight, "left": pos["left"] + ((linkWidth - menuWidth) + 1)});
 			},
 			function(){ 		
 				isHovering = false;
 				hideWindow();				
 			}
 		);
-		$("#settingsMenu").hover(
+		$menu.hover(
 			function(){
 				isHovering = true;
 			},
@@ -974,7 +977,7 @@ $(document).ready(function() {
 				hideWindow();
 			}
 		);
-		
+		/* need hack for ie
 		$("#keyType").hover(
 			function(){
 				isHovering = true;
@@ -984,15 +987,18 @@ $(document).ready(function() {
 				hideWindow();
 			}
 		);
-		
+		*/
 		var hideIf = function(){
-			if (!isHovering)
-				$("#settingsMenu").hide()
+			if (!isHovering) {
+				$link.removeClass("hover");
+				$menu.hide();
+			}
 		};
 		
-		function hideWindow(){setTimeout(hideIf,350)};
+		function hideWindow(){setTimeout(hideIf,100)};
 	};
-	tip = new DropDown();
+	var settingsHover = new HoverBoard("#settingsLink", "#settingsMenu");
+	var scoresHover = new HoverBoard(".viewScores", "#scoresOver");
 });
 
 })();
