@@ -510,7 +510,7 @@ var Test = function(){
 				updateTestString();
 				updateTestStage();
 				updateTestResults();
-				$("#testStatus").html(resetMsg || resources.start);
+				$("#testStatus").html(resetMsg || "<span>%s</span><a></a>".format(resources.start));
 				$("#testString").add("#resultString").add(".result").removeClass("finished");
 				$("#accuracyLabel").add("#wpmLabel").addClass("disabled");
 		},

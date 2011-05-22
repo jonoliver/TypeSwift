@@ -111,16 +111,23 @@ li {
 */
 #testStatus {
 	color: #FFF;
-	/* font-weight: bold; */
 	margin: 15px auto;
+	/* font-weight: bold; */
 }
 
-/*
-#testStatus span{
+#testStatus a{
 	background: transparent url("img/startArrow.png") no-repeat;
-	overflow: visible;
+	width: 37px;
+	height: 52px;
+	display: inline-block;
+	margin: -37px -26px 0 0;
+	
 }
-*/
+
+#testStatus span{
+	margin-right: -10px;
+}
+
 
 ul {
 	margin: 0;
