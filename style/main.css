@@ -18,6 +18,7 @@ li {
 #header {
 	background: url("img/header-bg.jpg") #3D3737;
 	height: 80px;
+	border-bottom: 1px solid #000;
 }
 
 #masthead {
@@ -77,11 +78,15 @@ li {
 
 #settingsLink.hover, .viewScores.hover {
 	background-position: top right;
+	/* border-bottom: 1px solid #3B3B3D; */
+	border-top: none;
 }
 #mainContainer {
 	background: #FFF;
 	height: 430px;
 	padding: 20px 0;
+	border-top: 7px solid #CDCDCD;
+	border-bottom: 7px solid #CDCDCD;
 }
 
 .page {
