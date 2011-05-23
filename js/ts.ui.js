@@ -378,16 +378,6 @@ var Test = function(){
 
 	var scores = {};
 
-	function clearTheScores(){
-		scores = {
-			"QWERTY" : [],
-			"DVORAK" : [],
-			"RANDOM" : []
-		};	
-		StatCounter().clearScore("QWERTY", "DVORAK", "RANDOM");
-		return scores;
-	}
-
 	function updateScores() {
 		wpm = calculateWPM(testTimer.getRawTime());
 		if (typeof scores[testType] == "undefined"){
@@ -601,7 +591,13 @@ var Test = function(){
 			log(scores);
 		},
 		clearScores : function(){
-			clearTheScores();
+			scores = {
+				"QWERTY" : [],
+				"DVORAK" : [],
+				"RANDOM" : []
+			};	
+			stats.clearScore("QWERTY", "DVORAK", "RANDOM");
+			return scores;
 		}
 	}
 }
