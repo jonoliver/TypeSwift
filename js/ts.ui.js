@@ -297,10 +297,8 @@ var Timer = function(f){
 var Test = function(){
 	var testTimer = new Timer();
 	var stats = new StatCounter()
-	
-	var testStarted = false;
-	var testEnded = false;
-	var timerStarted = false;
+	var isTestInitialized = false;
+	var isTestStarted = false;
 	var sCount = 0; // index of string to match against
 	var kCount = 0; // keystroke count
 	var mCount = 0; // mistake count
@@ -411,7 +409,7 @@ var Test = function(){
 		$("#mistakeUpdater").html(mCount);			
 		var accuracy = (kCount) ? Math.round(100-(mCount/kCount*100)) + "%" : "~";
 		$("#accuracyUpdater").html(accuracy);
-		wpm = (testEnded) ? calculateWPM(testTimer.getRawTime()) : "~";
+		wpm = (!isTestInitialized) ? calculateWPM(testTimer.getRawTime()) : "~";
 		$("#wpmUpdater").html(wpm);
 	}
 		
@@ -470,92 +468,95 @@ var Test = function(){
 
 	}
 	return {
-		started : function(setBool){
-			//if(setBool != null) {
-				//testStarted = setBool;
-			//}
-			return testStarted;
-		},
-		start : function(){
+ 		init : function(){
 			if($("#testScreen").is(":visible"))
 			{
-				testStarted = true;
+				isTestInitialized = true;
+				keyboardType = $("#keyType").val();
 				this.reset();
+				updateTestString();
+				updateTestStage();
+				updateTestResults();
+				$("#mainContainer .lessonId").hide();
+				$("#testStatus").show().html("<span>%s</span><a></a>".format(resources.start));
+				$("#testString").show().add("#resultString").add(".result").removeClass("finished");
+				$("#testStage").show();
+				$("#accuracyLabel").add("#wpmLabel").addClass("disabled");
 			}
 		},
 		
-		stop : function(){
+		// not currently used!
+		start : function(){
+			isTestStarted = true;			
+		},
+
+		// not currently used!		
+		pause : function(){
 			
 		},
 		
-		reset : function(resetMsg){
-				testEnded = false;
-				timerStarted = false;
+		stop : function(){
+			this.reset();
+			$("#mainContainer .lessonId").show();
+			$(".testString").add("#testStage").hide();
+			$("#testStatus").html("<span>%s</span><a></a>".format(resources.select));
+		},
+		
+		reset : function(){
+				isTestStarted = false;
 				sCount = 0; 
 				kCount = 0;
 				mCount = 0;
 				wCount = 0;			
-				keyboardType = $("#keyType").val();
 				resetTestTimer();
-				updateTestString();
-				updateTestStage();
-				updateTestResults();
-				$("#testStatus").html(resetMsg || "<span>%s</span><a></a>".format(resources.start));
-				$("#testString").add("#resultString").add(".result").removeClass("finished");
-				$("#accuracyLabel").add("#wpmLabel").addClass("disabled");
 		},
-		
+ 		
 		update : function(charInput, keyClass){
-			var response = false;
-			if (!timerStarted) {
-				timerStarted = true;
+			if (!isTestStarted) {
+				isTestStarted = true;
 				$("#testStatus").html(resources.inProgress);
 				testTimer.start();
 			}
-			if (!testEnded) {
-				kCount++;
-				
-				if (kCount > 0) {
-					$("#accuracyLabel").removeClass("disabled");
-				}
-				
-				if (charInput == testString.charAt(sCount)) { // correct key
-					$(keyClass).add(".curChar").addClass("rightKey");
-					sCount++;
-					updateTestString();
-					response = true;
-				}
-				else { // wrong key
-					$(keyClass).add(".curChar").addClass("wrongKey");
-					mCount++;
-					cursor.pause();
-				}
-				if (testString.length == sCount) { // successful finish
-					wCount += testString.split(" ").length;
-					var lesson = lessons[keyboardType][curLesson];
-					if (lessonIndex != null && lessonIndex < lesson.length - 1){
-						sCount = 0;
-						lessonIndex++;
-						
-						testString = lesson[lessonIndex];
-						updateTestString();
-					}
-					else {
-						lessonIndex++;
-						testTimer.pause();
-						endTest();
-						$("#testStatus").html(resources.finished);
-						$("#wpmLabel").removeClass("disabled");
-						testStarted = false;
-						testEnded = true;
-						updateScores();
-					}
-					updateTestStage();
-
-				}
-				updateTestResults();
+			kCount++;
+			
+			if (kCount > 0) {
+				$("#accuracyLabel").removeClass("disabled");
 			}
-			return response;
+			
+			if (charInput == testString.charAt(sCount)) { // correct key
+				$(keyClass).add(".curChar").addClass("rightKey");
+				sCount++;
+				updateTestString();
+			}
+			else { // wrong key
+				$(keyClass).add(".curChar").addClass("wrongKey");
+				mCount++;
+				cursor.pause();
+			}
+			if (testString.length == sCount) { // successful finish
+				wCount += testString.split(" ").length;
+				var lesson = lessons[keyboardType][curLesson];
+				if (lessonIndex != null && lessonIndex < lesson.length - 1){
+					sCount = 0;
+					lessonIndex++;
+					
+					testString = lesson[lessonIndex];
+					updateTestString();
+				}
+				else {
+					lessonIndex++;
+					testTimer.pause();
+					endTest();
+					$("#testStatus").html(resources.finished);
+					$("#wpmLabel").removeClass("disabled");
+					isTestInitialized = false;
+					isTestStarted = false;
+					updateScores();
+				}
+				updateTestStage();
+
+			}
+			updateTestResults();
 		},
 		
 		cleanUp : function(){
@@ -598,6 +599,9 @@ var Test = function(){
 			};	
 			stats.clearScore("QWERTY", "DVORAK", "RANDOM");
 			return scores;
+		},
+		isInitialized : function(){
+			return isTestInitialized;
 		}
 	}
 }
@@ -824,7 +828,7 @@ $(document).ready(function() {
 	var page = new PageHandler();
 
 	var $keytype = $("#keyType");
-	var $lessonid = $("#lessonId");
+	var $lessonid = $(".lessonId");
 
 	// get saved scores if any
 	var savedScores = StatCounter().getSavedScores();
@@ -860,7 +864,7 @@ $(document).ready(function() {
 	
  	$("#randomTest").click(function(){		
 		test.randomTest();
-		test.start();
+		test.init();
 		this.blur(); // spacebar will trigger button if still focused
 		
 	});
@@ -873,7 +877,7 @@ $(document).ready(function() {
 	
 	$(".viewScores").click(function(){
 		var scores = test.getScores();
-		test.reset();
+		test.stop();
 		StatCounter().populateScores(scores);
 		page.goTo("#scoreScreen");
 
@@ -895,7 +899,7 @@ $(document).ready(function() {
 		var lesson = this.value;
 		if (lesson != "") {
 			test.setTest(keyboardType, lesson);
-			test.start();
+			test.init();
 			this.blur();
 		}
 	});
@@ -912,7 +916,7 @@ $(document).ready(function() {
 
 
 	$(document).keypress(function(e){
-		if (test.started()){
+		if (test.isInitialized()){
 			e.preventDefault();
 			var charCode;
 			if (window.event) {charCode = window.event.keyCode;}

@@ -358,7 +358,6 @@ li.wrongKey, #resultString span.wrongKey {
 	height: 16px;
 }
 
-
 .checkmark {
 	color: #156E7E;
 	font-size: 30px;
@@ -366,6 +365,10 @@ li.wrongKey, #resultString span.wrongKey {
 	padding-left: 15px;
     padding-right: 2px;
 	vertical-align: middle;
+}
+
+#mainContainer .lessonId {
+	margin-top: 60px;
 }
 a {
 	cursor: pointer;
