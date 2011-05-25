@@ -435,14 +435,14 @@ var Test = function(){
 			}
 			else if(lessonIndex == thisLesson.length) {
 				var totalLessons = lessons[keyboardType].length - 1;
-				$testStage.html('<span class="curLesson">&#10003</span>');
+				//$testStage.html('<span class="curLesson">&#10003</span>');
 				/*
 				if (curLesson > 0) {
 					$testStage.prepend('<a id="prevLesson" class="%s">&#171 Last Lesson </a>'.format(curLesson - 1));
 				}
 				*/
 				if (curLesson < totalLessons) {
-					$testStage.append(' <a id="nextLesson" class="%s">Next Lesson &#187</a>'.format(parseInt(curLesson) + 1));
+					$testStage.html('<a id="nextLesson" class="%s"></a>'.format(parseInt(curLesson) + 1));
 				}
 			}
 			$testStage.children("span").removeClass("curLesson")
@@ -846,10 +846,22 @@ $(document).ready(function() {
 		addOption($keytype, keyTypeOption);
 	}
 	
-	$keytype.change(function(){
-		var keyType = this.value;
-
-		// add lesson options
+	// tiny jquery plugin for switches
+	$.fn.switchButton = function(f){
+		var $this = $(this);
+		
+		return $this.each(function(){
+			var on = false;
+			
+			$this.click(function(){
+				on = !on;
+				$this.toggleClass("on", on);
+				if (f) f.call(this, on);
+			});
+		});
+	}
+	
+	function changeKeyType(keyType){
 		var lessonOptions = lessons[keyType];
 		$lessonid.html(""); // clear options
 		addOption($lessonid, "");
@@ -858,21 +870,28 @@ $(document).ready(function() {
 		}
 		
 		keyboard.draw(keyType);
-	});
-	$keytype.change();
+	}
 
+	$("#keyboardOption").switchButton(function(isOn){
+		var keyType = (isOn) ? "DVORAK" : "QWERTY";
+		changeKeyType(keyType);
+	});
 	
+	$(".chooseKeyboard").click(function(){
+		var keyType = $(this).text();
+		changeKeyType(keyType);
+		page.next();
+	});
+	
+	$("#testType").switchButton(function(isOn){
+		log(isOn);
+	});
+
  	$("#randomTest").click(function(){		
 		test.randomTest();
 		test.init();
 		this.blur(); // spacebar will trigger button if still focused
 		
-	});
-
-	$(".chooseKeyboard").click(function(){
-		$keytype.val($(this).text());
-		$keytype.change();
-		page.next();
 	});
 	
 	$(".viewScores").click(function(){

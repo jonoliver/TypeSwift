@@ -217,7 +217,7 @@ li.wrongKey, #resultString span.wrongKey {
 	color: #C40303;
 }
 #testStage {
-	color: #9DD5DE;		
+	color: #9DD5DE;
 }
 #testStage .curLesson{
 	color: #156E7E;
@@ -230,6 +230,13 @@ li.wrongKey, #resultString span.wrongKey {
 
 #testStage a:hover {
 	text-decoration: underline;
+}
+#nextLesson {
+	display: block;
+	width: 40px;
+	height: 21px;
+	background: transparent url('img/next-arrow.png') center top no-repeat;
+	margin: 0 auto;
 }
 #resultContainer {
 	width: 420px;
@@ -353,11 +360,14 @@ li.wrongKey, #resultString span.wrongKey {
 /* #optionQwerty {*/
 #settingsMenu a {
 	display: block;
-	background: transparent url("img/keyboard-option-qwerty.png") 0 0 no-repeat;
+	background: transparent url("img/keyboard-option.png") right top no-repeat;
 	width: 101px;
 	height: 16px;
 }
 
+#settingsMenu a.on {
+background-position: left top;
+}
 .checkmark {
 	color: #156E7E;
 	font-size: 30px;
