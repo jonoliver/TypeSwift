@@ -200,10 +200,10 @@ span.main{
 #resultString span.cursorBlink {
 	border-bottom: 1px solid #000;
 }
-li.rightKey {
+#keyboard li.rightKey {
 	background: #017600;
 }
-li.wrongKey, #resultString span.wrongKey {
+#keyboard li.wrongKey, #resultString span.wrongKey {
 	background: #C40303;
 }
 #testString span.wrongKey,

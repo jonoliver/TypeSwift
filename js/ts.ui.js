@@ -33,8 +33,107 @@ String.prototype.format = function(){
 	return ret;
 }
 
-var StatCounter = function(){
+var localDataProxy = function(){
+	function hasLocalStorage() {
+		try { return 'localStorage' in window && window['localStorage'] !== null; }
+		catch (e) { return false; }
+	}
+
+	if(hasLocalStorage){
+		return {
+			setVal : function(name, val){
+				window.localStorage[name] = val;
+				log(window.localStorage[name]);
+			},
+			getVal : function(name){ return window.localStorage[name]; },
+			
+			clearVals : function(){
+				if (arguments.length == 0) {
+					for (var i = 0; i < window.localStorage.length; i++){
+						window.localStorage.removeItem(window.localStorage[i]);
+					}
+				}
+				else {
+					for (var i = 0; i < arguments.length; i++){
+						window.localStorage.removeItem(arguments[i]);
+					}
+				}
+			},
+			getData : function(){
+				if (localStorage.length > 0){
+					var storageObj = {};
+					for (var i = 0; i < localStorage.length; i++){
+						var key = localStorage.key(i);
+						storageObj[key] = localStorage[key];
+					}
+					return storageObj;
+				}
+				return null;
+			}
+		}
+	}
+	else {
+		
+		function setCookie(name, val, duration){
+			var expires = "";
+			if (duration){
+				var date = new Date();
+				date.setDate(date.getDate() + duration);
+				expires = " expires=%s;".format(
+					(duration == -1) ? "Thu, 01-Jan-1970 00:00:01 GMT" : date.toGMTString()
+				);
+			}
+			var cookie = "%s=%s;%s".format(name, val, expires);
+			document.cookie = cookie;
+		}
+		
+		return {
+			setVal : function(name, val, duration){
+				setCookie(name, val, duration || 365);
+				log("cookie: ", document.cookie);
+			},
+			
+			getVal : function(name){ return readCookieVal(name); },
+
+			readCookieVal : function(name){
+				var cookieObj = {};
+				var cookies = document.cookie.split(/;\s*/);
+				for (i = 0; i < cookies.length; i++){
+					var cookie = cookies[i].split("=");
+					cookieObj[cookie[0]] = cookie[1];
+				}
+				if (name) { return cookieObj[name]; }
+				return cookieObj;
+			},
+			
+			clearVals : function(){
+				if (arguments.length == 0){
+					var cookies = this.readCookieVal();
+					for (var cookie in cookies){
+						setCookie(cookie, "", -1);
+					}
+				}
+				else {
+					for (var i = 0; i < arguments.length; i++){
+						setCookie(arguments[i], "", -1);
+					}
+				}
+			},
+			getData : function(){
+				if (document.cookie) {
+					return this.readCookieVal();
+				}
+				return null;
+			}
+		}
+	}
 	
+}
+
+//localDataProxy().clearVals();
+
+var StatCounter = function(){
+	var dataProxy = new localDataProxy();
 	var returnObj = {};
 		
 	function createScore(val){
@@ -52,179 +151,106 @@ var StatCounter = function(){
 				}
 				return output.join("|");
 			}
-			else {
-				return val;
-			}
 		}
+		return val;
 	}
 
-	function parseScores(val){
-		var lessons = val.split("|");
-		for (var lesson = 0; lesson < lessons.length; lesson++){
-			var lessonStats = lessons[lesson].split(",");
-			if (lessonStats.length > 1) {
-				lessons[lesson] = {
-					"keystrokes" : lessonStats[0],
-					"mistakes" : lessonStats[1],
-					"wpm" : lessonStats[2]
-				}
-			}
-			else {
-				lessons[lesson] = undefined;
-			}
-		}
-		return lessons;
-	}
-		
-	function hasLocalStorage() {
-		try { return 'localStorage' in window && window['localStorage'] !== null; }
-		catch (e) { return false; }
-	}
-
-	if(hasLocalStorage){
-		returnObj = {
-			setScore : function(name, val){
-				var scoreVal = createScore(val);
-				window.localStorage[name] = scoreVal;
-				log(window.localStorage[name]);
-			},
-			getScore : function(name){
-				return window.localStorage[name];
-			},
-			clearScore : function(){
-				for (var i = 0; i < arguments.length; i++){
-					window.localStorage.removeItem(arguments[i]);
-				}
-			},
-			getSavedScores : function(){
-				log(localStorage.length);
-				if (localStorage.length > 0){
-					var cookieObj = {};
-					for (var i = 0; i < localStorage.length; i++){
-						var lesson = localStorage.key(i);
-						cookieObj[lesson] = parseScores(localStorage[lesson]);
-					}
-					return cookieObj;
-				}
-				else return undefined;
-			}
-		}
-	}
-	else {
-		function readCookieVal(name){
-			var cookieObj = {};
-			var cookies = document.cookie.split(/;\s*/);
-			for (i = 0; i < cookies.length; i++){
-				var cookie = cookies[i].split("=");
-				var lessons = parseScores(cookie[1]);
-				cookieObj[cookie[0]] = lessons;
-			}
-			if (name) {
-				return cookieObj[name];
-			}
-			return cookieObj;
-		}
-		
-		function setCookie(name, val, duration){
-			var expires = "";
-			if (duration){
-				var date = new Date();
-				date.setDate(date.getDate() + duration);
-				expires = " expires=%s;".format(
-					(duration == -1) ? "Thu, 01-Jan-1970 00:00:01 GMT" : date.toGMTString()
-				);
-			}
-			var cookie = "%s=%s;%s".format(name, val, expires);
-			document.cookie = cookie;
-		}
-		
-		returnObj = {
-			setScore : function(name, val, duration){
-				var scoreVal = createScore(val);
-				setCookie(name, scoreVal, duration || 365);
-				log("cookie: ", document.cookie);
-			},
-			getScore : function(name){
-				return readCookieVal(name);
-			},
-			clearScore : function(){
-				for (var i = 0; i < arguments.length; i++){
-					setCookie(arguments[i], "", -1);
-				}
-			},
-			getSavedScores : function(){
-				if (document.cookie) {
-					return readCookieVal();
-				}
-				return null;
-			}
-		}
-	}
-	
-	//common functions
-	returnObj.populateScores = function(scores){
-		var output = "";
-		var heading = "";
-		for (var lesson in scores){
-			if (scores[lesson].length > 0) {
-				var ksTotal = 0;
-				var mTotal = 0;
-				var wpmTotal = 0;
-				var wpmCount = 0;
-				var aCount = 0;
-				var aTotal = 0;
-				
-				output += "<table class='score' cellspacing=0>";
-				output += "<thead>";
-				output += "<tr class='emphasis'><th>%s</th><th>K</th><th>M</th><th>W</th><th>A</th></tr>".format(lesson);
-				output += "</thead>";
-				
-				var lessons = scores[lesson];
-				for (var i = 0; i <= lessons.length; i++){
-					if (lessons[i]) {
-						var keystrokes = lessons[i]["keystrokes"];
-						var mistakes = lessons[i]["mistakes"];
-						var wpm = lessons[i]["wpm"];
-						var accuracy = Math.round(100-(mistakes/keystrokes*100));
-						ksTotal += parseInt(keystrokes);
-						mTotal += parseInt(mistakes);
-						wpmTotal += parseInt(wpm);
-						wpmCount++;
-						aTotal += accuracy;
-						aCount++;
-						output += "<tr>";
-						output += "<td class='lesson'>Lesson %s</td>".format(i + 1);
-						output += "<td class='lessonDetail'>%s</td>".format(keystrokes);
-						output += "<td class='lessonDetail'>%s</td>".format(mistakes);
-						output += "<td class='lessonDetail'>%s</td>".format(wpm);
-						output += "<td class='lessonDetail'>%s%</td>".format(accuracy);
-						output += "</tr>";
+	function parseScores(scores){
+		for (var val in scores){
+			var score = scores[val];
+			var lessons = score.split("|");
+			for (var lesson = 0; lesson < lessons.length; lesson++){
+				var lessonStats = lessons[lesson].split(",");
+				if (lessonStats.length > 1) {
+					lessons[lesson] = {
+						"keystrokes" : lessonStats[0],
+						"mistakes" : lessonStats[1],
+						"wpm" : lessonStats[2]
 					}
 				}
-				output += "<tr class='emphasis'>";
-				output += "<td class='lesson'>Total</td>";
-				output += "<td class='lessonDetail'>%s</td>".format(ksTotal);
-				output += "<td class='lessonDetail'>%s</td>".format(mTotal);
-				output += "<td class='lessonDetail'>%s</td>".format(Math.round(wpmTotal/wpmCount));
-				output += "<td class='lessonDetail'>%s%</td>".format(Math.round(aTotal/aCount));
-				output += "</tr>";
-				output += "<table>";
+				else { lessons[lesson] = undefined; }
 			}
+			scores[val] = lessons;
 		}
-		
-		if (output == "")
-			$("#scoreHeading").html(resources.noScores);
-		else
-			$("#scoreHeading").html(resources.hasScores);
-		
-		$("#scoreList").html("").append(output);
-		$(".score").each(function(){
-			$(this).find("tbody>tr:even").addClass("even");
-		});
+		return scores;
 	}
-
+		
+	return {
+		setScore : function(name, val){
+			var scoreVal = createScore(val);
+			dataProxy.setVal(name, scoreVal);
+		},
+		
+		getScore : function(name){ dataProxy.getVal(name); },
+		
+		clearScore : function(){ dataProxy.clearVals.apply(dataProxy, arguments); },
+		
+		getSavedScores : function(){
+			var scores = dataProxy.getData();
+			return parseScores(scores);
+		},
+				
+		populateScores : function(scores){
+			var output = "";
+			var heading = "";
+			for (var lesson in scores){
+				if (scores[lesson].length > 0) {
+					var ksTotal = 0;
+					var mTotal = 0;
+					var wpmTotal = 0;
+					var wpmCount = 0;
+					var aCount = 0;
+					var aTotal = 0;
+					
+					output += "<table class='score' cellspacing=0>";
+					output += "<thead>";
+					output += "<tr class='emphasis'><th>%s</th><th>K</th><th>M</th><th>W</th><th>A</th></tr>".format(lesson);
+					output += "</thead>";
+					
+					var lessons = scores[lesson];
+					for (var i = 0; i <= lessons.length; i++){
+						if (lessons[i]) {
+							var keystrokes = lessons[i]["keystrokes"];
+							var mistakes = lessons[i]["mistakes"];
+							var wpm = lessons[i]["wpm"];
+							var accuracy = Math.round(100-(mistakes/keystrokes*100));
+							ksTotal += parseInt(keystrokes);
+							mTotal += parseInt(mistakes);
+							wpmTotal += parseInt(wpm);
+							wpmCount++;
+							aTotal += accuracy;
+							aCount++;
+							output += "<tr>";
+							output += "<td class='lesson'>Lesson %s</td>".format(i + 1);
+							output += "<td class='lessonDetail'>%s</td>".format(keystrokes);
+							output += "<td class='lessonDetail'>%s</td>".format(mistakes);
+							output += "<td class='lessonDetail'>%s</td>".format(wpm);
+							output += "<td class='lessonDetail'>%s%</td>".format(accuracy);
+							output += "</tr>";
+						}
+					}
+					output += "<tr class='emphasis'>";
+					output += "<td class='lesson'>Total</td>";
+					output += "<td class='lessonDetail'>%s</td>".format(ksTotal);
+					output += "<td class='lessonDetail'>%s</td>".format(mTotal);
+					output += "<td class='lessonDetail'>%s</td>".format(Math.round(wpmTotal/wpmCount));
+					output += "<td class='lessonDetail'>%s%</td>".format(Math.round(aTotal/aCount));
+					output += "</tr>";
+					output += "<table>";
+				}
+			}
 			
-	return returnObj;
+			if (output == "")
+				$("#scoreHeading").html(resources.noScores);
+			else
+				$("#scoreHeading").html(resources.hasScores);
+			
+			$("#scoreList").html("").append(output);
+			$(".score").each(function(){
+				$(this).find("tbody>tr:even").addClass("even");
+			});
+		}
+	}
 }
 //StatCounter().clearScore("QWERTY", "DVORAK", "RANDOM");
 log(document.cookie);
@@ -597,7 +623,7 @@ var Test = function(){
 				"DVORAK" : [],
 				"RANDOM" : []
 			};	
-			stats.clearScore("QWERTY", "DVORAK", "RANDOM");
+			stats.clearScore();
 			return scores;
 		},
 		isInitialized : function(){
