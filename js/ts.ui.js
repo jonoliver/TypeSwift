@@ -49,7 +49,8 @@ var localDataProxy = function(){
 			
 			clearVals : function(){
 				if (arguments.length == 0) {
-					for (var i = 0; i < window.localStorage.length; i++){
+					var storageLength = window.localStorage.length; // cache original length
+					for (var i = 0; i < storageLength; i++){
 						window.localStorage.removeItem(window.localStorage[i]);
 					}
 				}
@@ -498,7 +499,7 @@ var Test = function(){
 			if($("#testScreen").is(":visible"))
 			{
 				isTestInitialized = true;
-				keyboardType = $("#keyType").val();
+				//keyboardType = $("#keyType").val();
 				this.reset();
 				updateTestString();
 				updateTestStage();
@@ -625,6 +626,13 @@ var Test = function(){
 			};	
 			stats.clearScore();
 			return scores;
+		},
+		getKeyType: function(){
+			return keyboardType;
+		},
+		setKeyType: function(keyType){
+			keyboardType = keyType;
+			log(keyboardType);
 		},
 		isInitialized : function(){
 			return isTestInitialized;
@@ -853,7 +861,6 @@ $(document).ready(function() {
 	var lessons = test.getLessons();
 	var page = new PageHandler();
 
-	var $keytype = $("#keyType");
 	var $lessonid = $(".lessonId");
 
 	// get saved scores if any
@@ -866,11 +873,6 @@ $(document).ready(function() {
 	}
 	if (debug)
 		page.goTo(debugPage);
-	
-	for (var keyTypeOption in lessons) {
-		var curType = lessons[keyTypeOption];
-		addOption($keytype, keyTypeOption);
-	}
 	
 	// tiny jquery plugin for switches
 	$.fn.switchButton = function(f){
@@ -888,6 +890,7 @@ $(document).ready(function() {
 	}
 	
 	function changeKeyType(keyType){
+		test.setKeyType(keyType);
 		var lessonOptions = lessons[keyType];
 		$lessonid.html(""); // clear options
 		addOption($lessonid, "");
@@ -940,7 +943,7 @@ $(document).ready(function() {
 	});
 	
 	$lessonid.change(function(){
-		var keyboardType = $keytype.val();
+		var keyboardType = test.getKeyType();
 		var lesson = this.value;
 		if (lesson != "") {
 			test.setTest(keyboardType, lesson);
@@ -952,7 +955,7 @@ $(document).ready(function() {
 	$("#testStage").delegate("a#nextLesson", "click", function(){
 		var nextLesson = this.getAttribute("class");
 		/*
-		var keyboardType = $keytype.val();
+		var keyboardType = test.getKeyType();
 		test.setTest(keyboardType, nextLesson);
 		test.start();
 		*/
@@ -978,7 +981,7 @@ $(document).ready(function() {
 			if (keyboard.getKey(charCode)) { // if pressed key is on our keyboard
 				var keyClass = "." + charCode; // keypress class for onscreen keyboard
 				var charInput = String.fromCharCode(charCode); // Dvorak character from user input
-				if ($keytype[0].value == "DVORAK"){ charInput = keyboard.getKey(charCode); }
+				if (test.getKeyType() == "DVORAK"){ charInput = keyboard.getKey(charCode); }
 				test.update(charInput, keyClass);			
 			}
 		}
