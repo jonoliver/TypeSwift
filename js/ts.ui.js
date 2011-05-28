@@ -157,8 +157,10 @@ var StatCounter = function(){
 	}
 
 	function parseScores(scores){
+		var hasScore = false;
 		for (var val in scores){
 			if (val.match(/^(QWERTY|DVORAK)$/)){
+				hasScore = true;
 				var score = scores[val];
 				var lessons = score.split("|");
 				for (var lesson = 0; lesson < lessons.length; lesson++){
@@ -176,7 +178,7 @@ var StatCounter = function(){
 			}
 			else delete scores[val];
 		}
-		return scores;
+		return (hasScore) ? scores : null;
 	}
 		
 	return {
