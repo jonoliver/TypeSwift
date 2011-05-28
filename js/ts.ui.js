@@ -158,20 +158,23 @@ var StatCounter = function(){
 
 	function parseScores(scores){
 		for (var val in scores){
-			var score = scores[val];
-			var lessons = score.split("|");
-			for (var lesson = 0; lesson < lessons.length; lesson++){
-				var lessonStats = lessons[lesson].split(",");
-				if (lessonStats.length > 1) {
-					lessons[lesson] = {
-						"keystrokes" : lessonStats[0],
-						"mistakes" : lessonStats[1],
-						"wpm" : lessonStats[2]
+			if (val.match(/^(QWERTY|DVORAK)$/)){
+				var score = scores[val];
+				var lessons = score.split("|");
+				for (var lesson = 0; lesson < lessons.length; lesson++){
+					var lessonStats = lessons[lesson].split(",");
+					if (lessonStats.length > 1) {
+						lessons[lesson] = {
+							"keystrokes" : lessonStats[0],
+							"mistakes" : lessonStats[1],
+							"wpm" : lessonStats[2]
+						}
 					}
+					else { lessons[lesson] = undefined; }
 				}
-				else { lessons[lesson] = undefined; }
+				scores[val] = lessons;
 			}
-			scores[val] = lessons;
+			else delete scores[val];
 		}
 		return scores;
 	}
@@ -192,6 +195,7 @@ var StatCounter = function(){
 		},
 				
 		populateScores : function(scores){
+			log(scores);
 			var output = "";
 			var heading = "";
 			for (var lesson in scores){
