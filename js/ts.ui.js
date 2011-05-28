@@ -322,6 +322,7 @@ var Timer = function(f){
 	}
 }
 var Test = function(){
+	var settings = new localDataProxy();
 	var testTimer = new Timer();
 	var stats = new StatCounter()
 	var isTestInitialized = false;
@@ -331,7 +332,8 @@ var Test = function(){
 	var mCount = 0; // mistake count
 	var wCount = 0; // total words
 	var wpm = 0;
-	var keyboardType = ""; // qwerty or dvorak
+	var keyboardType = settings.getVal("KEYBOARD") || "QWERTY"; // qwerty or dvorak
+	log(keyboardType);
 	var testType = ""; // for scores
 	var testString = ""; // string to match
 	var curLesson = 0;
@@ -632,6 +634,7 @@ var Test = function(){
 		},
 		setKeyType: function(keyType){
 			keyboardType = keyType;
+			settings.setVal("KEYBOARD", keyType);
 			log(keyboardType);
 		},
 		isInitialized : function(){
@@ -860,7 +863,7 @@ $(document).ready(function() {
 	var test = new Test();
 	var lessons = test.getLessons();
 	var page = new PageHandler();
-
+	
 	var $lessonid = $(".lessonId");
 
 	// get saved scores if any
@@ -871,8 +874,9 @@ $(document).ready(function() {
 		if (!debug)
 			page.goTo("#testScreen");
 	}
-	if (debug)
-		page.goTo(debugPage);
+	var keyType = localDataProxy().getVal("KEYBOARD");
+
+	if (debug) page.goTo(debugPage);
 	
 	// tiny jquery plugin for switches
 	$.fn.switchButton = function(f){
@@ -889,6 +893,16 @@ $(document).ready(function() {
 		});
 	}
 	
+	$("#keyboardOption").switchButton(function(isOn){
+		keyType = (isOn) ? "DVORAK" : "QWERTY";
+		changeKeyType(keyType);
+	});
+
+	if (keyType) {
+		if (keyType == "QWERTY") changeKeyType(keyType);
+		else if (keyType == "DVORAK") $("#keyboardOption").click();
+	}
+
 	function changeKeyType(keyType){
 		test.setKeyType(keyType);
 		var lessonOptions = lessons[keyType];
@@ -900,14 +914,9 @@ $(document).ready(function() {
 		
 		keyboard.draw(keyType);
 	}
-
-	$("#keyboardOption").switchButton(function(isOn){
-		var keyType = (isOn) ? "DVORAK" : "QWERTY";
-		changeKeyType(keyType);
-	});
 	
 	$(".chooseKeyboard").click(function(){
-		var keyType = $(this).text();
+		keyType = $(this).text();
 		changeKeyType(keyType);
 		page.next();
 	});
