@@ -157,6 +157,14 @@ ul {
 	/* -moz-box-shadow: 1px 1px 1px #CCC; */
 	/* border: 1px solid #000000;	*/	
 }
+#keyboard li.home{
+	
+}
+
+#keyboard li.anchor{
+	background: -moz-linear-gradient(90deg, #4C4C54, #5B5B5B) repeat scroll 0 0 #3A3A3E;	
+}
+
 #keyboard li.anchorKey {
 	background: #222;
 }
