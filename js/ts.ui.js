@@ -49,8 +49,7 @@ var localDataProxy = function(){
 			
 			clearVals : function(){
 				if (arguments.length == 0) {
-					var storageLength = window.localStorage.length; // cache original length
-					for (var i = 0; i < storageLength; i++){
+					for (var i = window.localStorage.length - 1; i >= 0; i--){
 						window.localStorage.removeItem(window.localStorage[i]);
 					}
 				}
@@ -841,7 +840,8 @@ var Keyboard = function(){
 				$("#row1").prepend(spacer);
 				$("#row2").prepend(spacer + spacer);
 				$("#row3").prepend(spacer + spacer + spacer)
-					.next().after(spacebar);
+					.next().after(spacebar);55
+					
 			}
 			
 			
@@ -1018,8 +1018,9 @@ $(document).ready(function() {
 	
  	$(".clearScores").click(function(){
 		if (confirm("Clear all scores?")){
-			test.clearScores();
-			$(".viewScores").click();
+			var scores = test.clearScores();
+			StatCounter().populateScores(scores);
+			page.goTo("#scoreScreen");
 		}
 	});
 	
