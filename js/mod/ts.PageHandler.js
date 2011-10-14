@@ -34,4 +34,3 @@ var PageHandler = function(){
 		}
 	}
 }
-

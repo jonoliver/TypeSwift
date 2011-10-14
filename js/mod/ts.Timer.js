@@ -3,12 +3,13 @@ var Timer = function(f){
 	var tCount = 0; // timer counter
 	var sTotal = 60; // Always leave as 60 (unless the earth's speed changes)
 	var started = false;
+	var timerResultContainer = "#timerUpdater";
 	var millis = 100;
-	var callback = f || updateTime();
+	var callback = f || defaultCallback;
 				
 	this.start = function(){
 		if (!started) {
-			timer = setInterval(function(){callback()}, millis);
+			timer = setInterval(function(){updateTime(callback)}, millis);
 			started = true;
 		}
 	}
@@ -22,7 +23,11 @@ var Timer = function(f){
 	
 	this.reset = function(){
 		tCount = 0;
-		execCallback();
+	}
+						
+	// set result container
+	this.setContainer = function(container){
+		timerResultContainer = container;
 	}
 
 	// set milliseconds
@@ -34,12 +39,17 @@ var Timer = function(f){
 	this.getRawTime = function(){
 		return tCount * millis;
 	}
-		
-	function execCallback(){
+	
+	// public method to set timer results 
+	this.setTimerResults = function(){
+		updateTime(callback);
+	}
+	
+	function updateTime(callback){
 		callback();
 	}
 	
-	function updateTime(){
+	function defaultCallback(){
 		var seconds = tCount/10;
 		var minutes = 0;
 		if (seconds > sTotal) {
@@ -50,7 +60,6 @@ var Timer = function(f){
 		else minutes += "'";
 		if (seconds == Math.round(seconds)) seconds += ".0";
 		tCount++;
-		return '%s %s"'.format(minutes, seconds);
-		//$("#timerUpdater").html('%s %s"'.format(minutes, seconds));
+		$(timerResultContainer).html('%s %s"'.format(minutes, seconds));
 	}
 }

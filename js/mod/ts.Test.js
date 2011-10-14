@@ -1,8 +1,6 @@
 var Test = function(){
 	var settings = new localDataProxy();
-	var testTimer = new Timer(function(output){
-		$("#timerUpdater").html(output);							  
-	});
+	var testTimer = new Timer();
 	var stats = new StatCounter()
 	var isTestInitialized = false;
 	var isTestStarted = false;
@@ -227,6 +225,12 @@ var Test = function(){
 		return wAmt;
 	}
 
+	function resetTestTimer(){
+		testTimer.pause();
+		testTimer.reset();
+		testTimer.setTimerResults();
+
+	}
 	return {
  		init : function(){
 			if($("#testScreen").is(":visible"))
@@ -268,8 +272,7 @@ var Test = function(){
 				kCount = 0;
 				mCount = 0;
 				wCount = 0;			
-				testTimer.pause();
-				testTimer.reset();
+				resetTestTimer();
 		},
  		
 		update : function(charInput, keyClass){
@@ -292,6 +295,7 @@ var Test = function(){
 			else { // wrong key
 				$(keyClass).add(".curChar").addClass("wrongKey");
 				mCount++;
+				cursor.pause();
 			}
 			if (testString.length == sCount) { // successful finish
 				wCount += testString.split(" ").length;
@@ -323,6 +327,7 @@ var Test = function(){
 			$(".rightKey").add(".curChar").removeClass("rightKey");
 			$(".wrongKey").add(".curChar").removeClass("wrongKey");
 			$(".curChar").addClass("cursorBlink");
+			cursor.start();
 		},
 		
 		randomTest : function(){
