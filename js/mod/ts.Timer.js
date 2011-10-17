@@ -1,4 +1,4 @@
-var Timer = function(f){
+Typeswift.prototype.Timer = function(f){
 	var timer = null;
 	var tCount = 0; // timer counter
 	var sTotal = 60; // Always leave as 60 (unless the earth's speed changes)

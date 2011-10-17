@@ -1,5 +1,5 @@
-var StatCounter = function(){
-	var dataProxy = new localDataProxy();
+Typeswift.prototype.StatCounter = function(){
+	var dataProxy = new ts.LocalDataProxy();
 	var returnObj = {};
 		
 	function createScore(val){
@@ -113,9 +113,9 @@ var StatCounter = function(){
 			}
 			
 			if (output == "")
-				$("#scoreHeading").html(resources.noScores);
+				$("#scoreHeading").html(ts.resources.noScores);
 			else
-				$("#scoreHeading").html(resources.hasScores);
+				$("#scoreHeading").html(ts.resources.hasScores);
 			
 			$("#scoreList").html("").append(output);
 			$(".score").each(function(){

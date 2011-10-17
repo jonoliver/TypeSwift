@@ -1,16 +1,9 @@
-var cursor = new Timer(function(){
-	$("#cursor").toggle();
-	$(".curChar").toggleClass("cursorBlink");
-});
-cursor.setMillis(400);
-cursor.start();
-
 (function(){
-
+var debug = false;
+var debugPage = "#scoreScreen";
+var debugLocalStorage = true;
 //StatCounter().clearScore("QWERTY", "DVORAK", "RANDOM");
 log(document.cookie);
-
-
 
 function generateKeyObj(){ 
 	var qwerty = " -=qwertyuiop[]asdfghjkl;'zxcvbnm,./_+QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?";
@@ -35,26 +28,23 @@ function addOptions(field, options) {
 	});
 }
 
-
-
-
 $(document).ready(function() {
-	var keyboard = new Keyboard();
-	var test = new Test();
+	var keyboard = new ts.Keyboard();
+	var test = new ts.Test();
 	var lessons = test.getLessons();
-	var page = new PageHandler();
+	var page = new ts.PageHandler();
 	
 	var $lessonid = $(".lessonId");
 
 	// get saved scores if any
-	var savedScores = StatCounter().getSavedScores();
+	var savedScores = ts.StatCounter().getSavedScores();
 	log(savedScores);
 	if (savedScores){
 		test.loadScores(savedScores);
 		if (!debug)
 			page.goTo("#testScreen");
 	}
-	var keyType = localDataProxy().getVal("KEYBOARD");
+	var keyType = ts.LocalDataProxy().getVal("KEYBOARD");
 
 	if (debug) page.goTo(debugPage);
 	
@@ -164,7 +154,7 @@ $(document).ready(function() {
 			if (charCode == 0) { // Tab to pause
 				testTimer.pause();
 				test.started(false);
-				$("#testStatus").html(resources.paused);
+				$("#testStatus").html(ts.resources.paused);
 			}
 			*/
 			

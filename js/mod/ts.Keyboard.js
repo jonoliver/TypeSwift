@@ -1,4 +1,4 @@
-var Keyboard = function(){
+Typeswift.prototype.Keyboard = function(){
 	
 		var keyGuideArray = [
 			// row1 secondary

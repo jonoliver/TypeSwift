@@ -1,7 +1,7 @@
-var Test = function(){
-	var settings = new localDataProxy();
-	var testTimer = new Timer();
-	var stats = new StatCounter()
+Typeswift.prototype.Test = function(){
+	var settings = new ts.LocalDataProxy();
+	var testTimer = new ts.Timer();
+	var stats = new ts.StatCounter()
 	var isTestInitialized = false;
 	var isTestStarted = false;
 	var sCount = 0; // index of string to match against
@@ -15,6 +15,12 @@ var Test = function(){
 	var testString = ""; // string to match
 	var curLesson = 0;
 	var lessonIndex = 0;
+	var cursor = new ts.Timer(function(){
+		$("#cursor").toggle();
+		$(".curChar").toggleClass("cursorBlink");
+	});
+	cursor.setMillis(400);
+	cursor.start();
 
 	var lessons = {
 		"QWERTY" : [
@@ -242,7 +248,7 @@ var Test = function(){
 				updateTestStage();
 				updateTestResults();
 				$("#mainContainer .lessonId").hide();
-				$("#testStatus").show().html("<span>%s</span><a></a>".format(resources.start));
+				$("#testStatus").show().html("<span>%s</span><a></a>".format(ts.resources.start));
 				$("#testString").show().add("#resultString").add(".result").removeClass("finished");
 				$("#testStage").show();
 				$("#accuracyLabel").add("#wpmLabel").addClass("disabled");
@@ -263,7 +269,7 @@ var Test = function(){
 			this.reset();
 			$("#mainContainer .lessonId").show();
 			$(".testString").add("#testStage").hide();
-			$("#testStatus").html("<span>%s</span><a></a>".format(resources.select));
+			$("#testStatus").html("<span>%s</span><a></a>".format(ts.resources.select));
 		},
 		
 		reset : function(){
@@ -278,7 +284,7 @@ var Test = function(){
 		update : function(charInput, keyClass){
 			if (!isTestStarted) {
 				isTestStarted = true;
-				$("#testStatus").html(resources.inProgress);
+				$("#testStatus").html(ts.resources.inProgress);
 				testTimer.start();
 			}
 			kCount++;
@@ -311,7 +317,7 @@ var Test = function(){
 					lessonIndex++;
 					testTimer.pause();
 					endTest();
-					$("#testStatus").html(resources.finished);
+					$("#testStatus").html(ts.resources.finished);
 					$("#wpmLabel").removeClass("disabled");
 					isTestInitialized = false;
 					isTestStarted = false;

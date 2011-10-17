@@ -1,5 +1,5 @@
 // string resources
-var resources = {
+Typeswift.prototype.resources = {
 	select: "Select a lesson!",
 	start : "Start typing to begin!",
 	inProgress : "Test in progress...",	

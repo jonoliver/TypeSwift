@@ -1,4 +1,4 @@
-var PageHandler = function(){
+Typeswift.prototype.PageHandler = function(){
 	
 	function setPage(){
 		if ($("#testScreen").is(":visible")){

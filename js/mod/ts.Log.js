@@ -1,8 +1,3 @@
-var debug = false;
-var debugPage = "#scoreScreen";
-var debugLocalStorage = true;
-
-
 var log = function(){};
 if (window.console) {
 	if (/Safari/.test(navigator.userAgent)) {
