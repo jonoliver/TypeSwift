@@ -7,7 +7,7 @@ Typeswift.prototype.resources = {
 	finished : "Finished!",
 	hasScores : "Your scores",
 	noScores : "You don't have any saved scores yet."
-}
+};
 
 // extend string functionality
 String.prototype.format = function(){
@@ -16,4 +16,4 @@ String.prototype.format = function(){
 		ret = ret.replace("%s", arguments[i]);
 	}
 	return ret;
-}
+};

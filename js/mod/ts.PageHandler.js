@@ -33,4 +33,4 @@ Typeswift.prototype.PageHandler = function(){
 			setPage();
 		}
 	}
-}
+};

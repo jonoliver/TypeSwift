@@ -123,4 +123,4 @@ Typeswift.prototype.StatCounter = function(){
 			});
 		}
 	}
-}
+};

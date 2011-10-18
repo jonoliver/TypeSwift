@@ -384,5 +384,5 @@ Typeswift.prototype.Test = function(){
 			return isTestInitialized;
 		}
 	}
-}
+};
 

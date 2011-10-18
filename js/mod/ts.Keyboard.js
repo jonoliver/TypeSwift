@@ -146,6 +146,6 @@ Typeswift.prototype.Keyboard = function(){
 	this.getKey = function(charCode){
 		return keyGuide[charCode];		
 	}
-}
+};
 
 

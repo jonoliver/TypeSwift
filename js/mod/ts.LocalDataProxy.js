@@ -93,5 +93,5 @@ Typeswift.prototype.LocalDataProxy = function(){
 		}
 	}
 	
-}
+};
 

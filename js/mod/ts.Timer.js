@@ -62,4 +62,4 @@ Typeswift.prototype.Timer = function(f){
 		tCount++;
 		$(timerResultContainer).html('%s %s"'.format(minutes, seconds));
 	}
-}
+};
