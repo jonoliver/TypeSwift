@@ -22,6 +22,7 @@ Typeswift.prototype.Test = function(){
 	cursor.setMillis(400);
 	cursor.start();
 
+	// these lessons are obviously very much in progress...
 	var lessons = {
 		"QWERTY" : [
 			[ // test
@@ -84,6 +85,8 @@ Typeswift.prototype.Test = function(){
 			]
 		]
 		*/
+		
+//	Dvorak lessons "borrowed" for non-commercial use from http://gigliwood.com/abcd/lessons/
 ,"DVORAK":[
 ["uuuu hhhh uuuu hhhh uuuu hhhh uuuu hhhh","uuuu hhhh uuuu hhhh uuuu hhhh uuuu hhhh","uh uh uh uh","hu hu hu hu","huh huh huh huh","uh huh uh huh uh huh uh huh","h u uh hu uhh huh uhh","h u uh hu uhh huh uhh"],
 ["eeee tttt eeee tttt eeee tttt eeee tttt","eeee tttt eeee tttt eeee tttt eeee tttt","et et et et","tee tee tee tee","tete tete tete tete","eet eet eet eet","t e et te teet tee teet tete et","t e et te teet tee teet tete et"],
@@ -159,7 +162,6 @@ Typeswift.prototype.Test = function(){
 		};
 		log(scores);
 		stats.setScore(testType, scores[testType]);
-		log(localStorage.length);
 	}
 	
 	function getRandomTest(){

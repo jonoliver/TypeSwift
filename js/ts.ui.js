@@ -105,7 +105,7 @@ $(document).ready(function() {
 	$(".viewScores").click(function(){
 		var scores = test.getScores();
 		test.stop();
-		StatCounter().populateScores(scores);
+		ts.StatCounter().populateScores(scores);
 		page.goTo("#scoreScreen");
 
 	});
@@ -117,7 +117,7 @@ $(document).ready(function() {
  	$(".clearScores").click(function(){
 		if (confirm("Clear all scores?")){
 			var scores = test.clearScores();
-			StatCounter().populateScores(scores);
+			ts.StatCounter().populateScores(scores);
 			page.goTo("#scoreScreen");
 		}
 	});
