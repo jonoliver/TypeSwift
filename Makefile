@@ -40,6 +40,7 @@ JS_PATH = ${JS}/${JS_FILE}
 CLOSURE_COMPILER = ${BUILD_DIR}/google-compiler-20100917.jar
 MINJAR ?= java -jar ${CLOSURE_COMPILER}
 
+#not used
 define copy_files
 	@@for file in ${1}/*; do \
 		echo "$${file}" ; \
@@ -47,11 +48,21 @@ define copy_files
 	done;
 endef
 
-all : init index style js
+#not used
+define cleanup_dist_tmp
+	if (test -d ${DIST_DIR}.old.tmp)
+		@@ rm -r ${DIST_DIR}.old.tmp
+	endif
+endef
+
+all : init index style js cleanup
 	@@ echo "Build complete"
 
 init:
 	@@ echo "Initiating build..."
+	@@ if (test -d ${DIST_DIR}.old) then \
+		mv ${DIST_DIR}.old ${DIST_DIR}.old.tmp ; \
+	fi
 	@@ if (test -d ${DIST_DIR}) then \
 		echo "Backing up previous build..." ; \
 		mv ${DIST_DIR} ${DIST_DIR}.old ; \
@@ -64,6 +75,7 @@ init:
 index: ${DIST_DIR}
 	@@ echo "Preparing index page..."
 	@@ cp index.html ${DIST_DIR}/index.html
+	@@ sed -i '/<!--[^\[if].*/d' ${DIST_DIR}/index.html
 	@@ sed -i '/<script.*>.*<\/script>.*/d' ${DIST_DIR}/index.html
 	@@ sed -i "s~</html>~<script type=\"text/javascript\" src=\"$(JS_PATH)\"></script>\n</html>~" ${DIST_DIR}/index.html
 
@@ -89,5 +101,10 @@ js: ${DIST_DIR}
 	@@ echo "Adding dependencies..."
 	@@ cat ${JS_LIB_FILES} ${JS_OUTPUT}.tmp > ${JS_OUTPUT}
 	@@ rm -f ${JS_OUTPUT}.tmp
+
+cleanup: ${DIST_DIR}
+	@@ if (test -d ${DIST_DIR}.old.tmp) then \
+		rm -r ${DIST_DIR}.old.tmp ; \
+	fi
 
 
