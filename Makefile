@@ -53,7 +53,7 @@ all : init index style js
 init:
 	@@ echo "Initiating build..."
 	@@ if (test -d ${DIST_DIR}) then \
-		echo "Backing up previous build---" ; \
+		echo "Backing up previous build..." ; \
 		mv ${DIST_DIR} ${DIST_DIR}.old ; \
 	fi
 	@@ mkdir -p ${DIST_DIR}
