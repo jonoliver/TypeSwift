@@ -77,7 +77,7 @@ index: ${DIST_DIR}
 	@@ cp index.html ${DIST_DIR}/index.html
 	@@ sed -i '/<!--[^\[if].*/d' ${DIST_DIR}/index.html
 	@@ sed -i '/<script.*>.*<\/script>.*/d' ${DIST_DIR}/index.html
-	@@ sed -i "s~</html>~<script type=\"text/javascript\" src=\"$(JS_PATH)\"></script>\n</html>~" ${DIST_DIR}/index.html
+	@@ sed -i "s~</body>~<script type=\"text/javascript\" src=\"$(JS_PATH)\"></script>\n</body>~" ${DIST_DIR}/index.html
 
 style: ${DIST_DIR}
 
