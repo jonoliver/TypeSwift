@@ -4,7 +4,7 @@ Typeswift.prototype.LocalDataProxy = function(){
 		catch (e) { return false; }
 	}
 
-	if(hasLocalStorage){
+	if(hasLocalStorage()){
 		return {
 			setVal : function(name, val){
 				window.localStorage[name] = val;
@@ -58,7 +58,7 @@ Typeswift.prototype.LocalDataProxy = function(){
 				log("cookie: ", document.cookie);
 			},
 			
-			getVal : function(name){ return readCookieVal(name); },
+			getVal : function(name){ return this.readCookieVal(name); },
 
 			readCookieVal : function(name){
 				var cookieObj = {};
