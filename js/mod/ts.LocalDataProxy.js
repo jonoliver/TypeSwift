@@ -1,5 +1,10 @@
-Typeswift.prototype.LocalDataProxy = function(){
+Typeswift.prototype.LocalDataProxy = function(setStorageMode){
 	function hasLocalStorage() {
+		// for debugging and tests, true for localStorage, false for cookie
+		if (setStorageMode !== undefined){
+			return setStorageMode;
+		}
+		
 		try { return 'localStorage' in window && window['localStorage'] !== null; }
 		catch (e) { return false; }
 	}
@@ -8,14 +13,13 @@ Typeswift.prototype.LocalDataProxy = function(){
 		return {
 			setVal : function(name, val){
 				window.localStorage[name] = val;
-				log(window.localStorage[name]);
 			},
 			getVal : function(name){ return window.localStorage[name]; },
 			
 			clearVals : function(){
 				if (arguments.length == 0) {
 					for (var i = window.localStorage.length - 1; i >= 0; i--){
-						window.localStorage.removeItem(window.localStorage[i]);
+						window.localStorage.clear();
 					}
 				}
 				else {
@@ -48,14 +52,13 @@ Typeswift.prototype.LocalDataProxy = function(){
 					(duration == -1) ? "Thu, 01-Jan-1970 00:00:01 GMT" : date.toGMTString()
 				);
 			}
-			var cookie = "%s=%s;%s".format(name, val, expires);
+			var cookie = "%s=%s;%s path=/".format(name, val, expires);
 			document.cookie = cookie;
 		}
 		
 		return {
 			setVal : function(name, val, duration){
 				setCookie(name, val, duration || 365);
-				log("cookie: ", document.cookie);
 			},
 			
 			getVal : function(name){ return this.readCookieVal(name); },
