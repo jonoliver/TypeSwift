@@ -20,11 +20,12 @@ dirs_to_create = [
 	dist_img_dir,
 ]
 
-js_lib_files = %w{
-	jquery-1.4.2
-}.map { |js| File.join( 'js', 'lib', "#{js}.min.js" ) }
+js_lib_files = [
+	'require',
+	'jquery-1.4.2.min'
+].map { |js| File.join( 'js', 'lib', "#{js}.js" ) }
 
-js_init = File.join( 'js', 'ts.init.js')
+$js_init = File.join( 'js', 'ts.init.js')
 js_ui = File.join( 'js', 'ts.ui.js')
 
 js_mod_files = %w{
@@ -41,7 +42,7 @@ new_index = dist_dir + '/index.html'
 new_js = File.join(dist_dir, js_ui)
 
 
-js_files = [js_init, js_mod_files, js_ui].flatten
+js_files = [$js_init, js_mod_files, js_ui].flatten
 minfier    = "java -jar #{build_dir}/google-compiler-20100917.jar"
 
 real = [:init, new_index, new_js, :images, :cleanup]
@@ -85,10 +86,13 @@ file new_js => [js_files].flatten do
 		f.write cat(js_files).
 		  	gsub(/log\(.+\);*/, '')
 	end
-
-	puts "Minifying js..."
-	sh "#{minfier} --js #{new_js} --warning_level QUIET --js_output_file #{new_js}.tmp"
-
+	
+	if ENV['debug'] == nil	
+		puts "Minifying js..."
+		sh "#{minfier} --js #{new_js} --warning_level QUIET --js_output_file #{new_js}.tmp"
+	else
+		File.rename(new_js, "#{new_js}.tmp")
+	end
 	puts "Adding dependencies..."
 	File.open(new_js, 'w') do |f|
 		f.write cat([js_lib_files, "#{new_js}.tmp"].flatten)
@@ -132,7 +136,13 @@ end
 
 def cat( files )
   files.map do |file|
-    File.read(file)
+	case file
+		when $js_init
+    		File.read(file).
+			  	gsub(/require\(.+\);*/m, '')
+		else
+    		File.read(file)
+	end
   end.join('')
 end
 
