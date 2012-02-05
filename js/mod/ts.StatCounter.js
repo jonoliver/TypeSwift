@@ -52,7 +52,9 @@ Typeswift.prototype.StatCounter = function(){
 			dataProxy.setVal(name, scoreVal);
 		},
 		
-		getScore : function(name){ dataProxy.getVal(name); },
+		getScore : function(name){
+			return dataProxy.getVal(name);
+		},
 		
 		clearScore : function(){ dataProxy.clearVals.apply(dataProxy, arguments); },
 		

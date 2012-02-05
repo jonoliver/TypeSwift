@@ -12,17 +12,25 @@ describe("LocalDataProxy", function(){
 		expect(savedVal).toEqual(testVal);
 	});
 
-	it('gets all values from localStorage', function(){
-		var proxy = ts.LocalDataProxy(true);
-		var data = proxy.getData(); 
-		expect(data).toEqual(returnObj);
-	});
-
 	it('clears all values in localStorage', function(){
 		var proxy = ts.LocalDataProxy(true);
 		proxy.clearVals();
 		var data = proxy.getData();
 		expect(proxy.getData()).toEqual(null);
+	});
+
+	it('gets all values from localStorage', function(){
+		var proxy = ts.LocalDataProxy(true);
+		proxy.setVal(testName, testVal);
+		var data = proxy.getData(); 
+		expect(data).toEqual(returnObj);
+	});
+
+	it('clears single value from localStorage', function(){
+		var proxy = ts.LocalDataProxy(true);
+		proxy.clearVals(testName);
+		var data = proxy.getData(); 
+		expect(data).toEqual(null);
 	});
 
 	
@@ -34,12 +42,6 @@ describe("LocalDataProxy", function(){
 		expect(savedVal).toEqual(testVal);
 	});
 
-	it('gets all values from cookie', function(){
-		var proxy = ts.LocalDataProxy(false);
-		var data = proxy.getData(); 
-		expect(data).toEqual(returnObj);
-	});
-
 	it('clears all values in cookie', function(){
 		var proxy = ts.LocalDataProxy(false);
 		proxy.clearVals();
@@ -47,4 +49,20 @@ describe("LocalDataProxy", function(){
 		expect(proxy.getData()).toEqual(null);
 	});
 
+	it('gets all values from cookie', function(){
+		var proxy = ts.LocalDataProxy(false);
+		proxy.setVal(testName, testVal);
+		var data = proxy.getData(); 
+		expect(data).toEqual(returnObj);
+	});
+
+	it('clears single value from cookie', function(){
+		var proxy = ts.LocalDataProxy(false);
+		proxy.clearVals(testName);
+		var data = proxy.getData(); 
+		expect(data).toEqual(null);
+	});
+
+log(document.cookie);
+log(window.localStorage);
 });
